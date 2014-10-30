@@ -18,50 +18,53 @@
   <link rel="stylesheet" href="tabs.css">
   
   <!-- Tabs custom -->
-  <script src="script.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <script type="text/jsx">
+    /* Declare tab names in array */
     var TabNames = ["Tab 1","Tab with long name","Tab 3","Tab with name","Tab 5","Tab 6","Tab 7"];
 
-    // Try to get number for link id
-    // for (var i = 0; i < TabNames.length; i++) {
-    //   TabNames[i];
-    //   console.log(TabNames[i])
-    // }
-
+    /* Render head with tabs */ 
     var TabsHead = React.createClass({
       getInitialState: function() {
         return {data: this.props.data};
       },
 
       render: function() {
-        // var tabLinks = <a href="#tab-">{item}</a>
-        //var tabLinks = React.DOM.a({href:'#tab-'})
-        var listItems = this.state.data.map(function(item) {
-          return <li><a href="#tab-">{item}</a></li>;
+        var TabItems = this.state.data.map(function(item, index) {
+          /* Put each name in separate element and put dynamic hash to link */ 
+          return (
+            <li key={'tab-item-' + index} className="tabs-item">
+              <a href={"#tab-" + (index + 1)} className="tabs-item-link">{item}</a>
+            </li>
+          );
         });
-        return <ul className="tabs__head">{listItems}</ul>
+        return <ul className="tabs__head">{TabItems}</ul>
       }
     });
 
+    /* Render tab content */ 
     var TabsBody = React.createClass({
+      getInitialState: function() {
+        return {data: this.props.data};
+      },
       render: function() {
-        return (
-          <div className="tabs__body">
-            Tab content 1
-          </div>
-        );
+        var TabBodyItems = this.state.data.map(function(item, index) {
+          /* Put amount of tab bodies to correspond amount of tabs and put dynamic ids to correspond hash */ 
+          return <div key={'tab-body-' + index} className="container" id={"tab-" + (index + 1)} />
+        });
+        return <div className="tabs__body">{TabBodyItems}</div>
       }
     });
 
+    /* Render layout for tabs component */ 
     var tabs = React.createClass({
       render: function() {
         return (
           <div className="tabs">
             <TabsHead data={TabNames} />
-               <TabsBody />
+            <TabsBody data={TabNames} />
           </div>
         );
       }
@@ -72,28 +75,27 @@
       document.body
     );
 
+    /* Example how to insert any content to first tab body */ 
+    var Tab1Content = React.createClass({
+      render: function () {
+        return <span>About This Business Family owned &amp; operated auto repair shop located at 3999 S. Main St Unit S1, Salt Lake City, specializing in Japanese cars, but we also work on all other domestic and import makes and models,If you're looking for a honest and good repair shop then you need to call us,we have low overhead and low prices...try us out!!! you won't be disappointed...Thank you.</span>
+      }
+    });
+
+    React.render(
+      React.createElement(Tab1Content, null),
+      document.getElementById('tab-1')
+    );
+
+    /* Initialize responsive tabs jquery plugin */ 
     $('.tabs').responsiveTabs({
       rotate: false,
-      startCollapsed: 'accordion',
-      collapsible: 'accordion',
-      setHash: true
+      startCollapsed: 'tabs',
+      collapsible: 'tabs',
+      setHash: true,
+      animation: 'slide',
+      duration: 'fast'
     });
   </script>
-  <!--div class="tabs">
-    <ul class="tabs__head">
-      <li><a href="#tab-1">Tab 1</a></li>
-      <li><a href="#tab-2">Tab with name 2</a></li>
-      <li><a href="#tab-3">Tab with long name 3</a></li>
-    </ul>
-    <div class="tabs__body" id="tab-1">
-      Tab 1
-    </div>
-    <div class="tabs__body" id="tab-2">
-      Tab 2
-    </div>
-    <div class="tabs__body" id="tab-3">
-      Tab 3
-    </div>
-  </div-->
 </body>
 </html>
