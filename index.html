@@ -12,18 +12,35 @@
   <script src="http://fb.me/react-0.12.0.js"></script>
   <script src="http://fb.me/JSXTransformer-0.12.0.js"></script>
 
-  <!-- Tabs vendor -->
-  <script src="jquery.js"></script>
-  <script src="jquery.responsiveTabs.js"></script>
-  <link rel="stylesheet" href="tabs.css">
+  <link rel="stylesheet" href="bower_components/ksl-styles/dist/styles.css" />
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
   
   <!-- Tabs custom -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <script type="text/jsx">
+    /* Example how to insert any content to first and second tab body */
+    var Tab1Content = React.createClass({
+      render: function () {
+        return (
+          <span>About This Business Family owned &amp; operated auto repair shop located at 3999 S. Main St Unit S1, Salt Lake City, specializing in Japanese cars, but we also work on all other domestic and import makes and models,If you're looking for a honest and good repair shop then you need to call us,we have low overhead and low prices...try us out!!! you won't be disappointed...Thank you.</span>
+        );
+      }
+    });
+
+    var Tab2Content = React.createClass({
+      render: function () {
+        return (
+          <button>Im button in Tab 2</button>
+        );
+      }
+    });
+
     /* Declare tab names in array */
-    var TabNames = ["Tab 1","Tab with long name","Tab 3","Tab with name","Tab 5","Tab 6","Tab 7"];
+    var TabNames = ["Tab 1", "Tab with long name", "Tab 3", "Tab with name", "Tab 5", "Tab 6", "Tab 7"];
+    var TabContents = [<Tab1Content />, <Tab2Content />, "Tab 3 content", "Tab with name content", "Tab 5 content", "Tab 6 content", "Tab 7 content"
+    ];
 
     /* Render head with tabs */ 
     var TabsHead = React.createClass({
@@ -35,7 +52,7 @@
         var TabItems = this.state.data.map(function(item, index) {
           /* Put each name in separate element and put dynamic hash to link */ 
           return (
-            <li key={'tab-item-' + index} className="tabs-item">
+            <li key={'tab-item-' + (index + 1)} className="tabs-item tabs-item--default">
               <a href={"#tab-" + (index + 1)} className="tabs-item-link">{item}</a>
             </li>
           );
@@ -52,49 +69,45 @@
       render: function() {
         var TabBodyItems = this.state.data.map(function(item, index) {
           /* Put amount of tab bodies to correspond amount of tabs and put dynamic ids to correspond hash */ 
-          return <div key={'tab-body-' + index} className="container" id={"tab-" + (index + 1)} />
+          return <div key={'tab-body-' + (index + 1)} className="tabs__content" id={"tab-" + (index + 1)}>{item}</div>
         });
         return <div className="tabs__body">{TabBodyItems}</div>
       }
-    });
+    }); 
 
     /* Render layout for tabs component */ 
-    var tabs = React.createClass({
+    var Tabs = React.createClass({
       render: function() {
         return (
           <div className="tabs">
             <TabsHead data={TabNames} />
-            <TabsBody data={TabNames} />
+            <TabsBody data={TabContents} />
           </div>
         );
       }
     });
 
     React.render(
-      React.createElement(tabs, null),
-      document.body
+      <Tabs />, document.body
     );
 
-    /* Example how to insert any content to first tab body */ 
-    var Tab1Content = React.createClass({
-      render: function () {
-        return <span>About This Business Family owned &amp; operated auto repair shop located at 3999 S. Main St Unit S1, Salt Lake City, specializing in Japanese cars, but we also work on all other domestic and import makes and models,If you're looking for a honest and good repair shop then you need to call us,we have low overhead and low prices...try us out!!! you won't be disappointed...Thank you.</span>
-      }
-    });
+    /* Manipulate tabs with jquery */ 
+    $(function(){
+      /* Activate first tab on load */ 
+      $('.tabs .tabs__head .tabs-item:first-child').addClass('tabs-item--active').removeClass('tabs-item--default');
+      $('.tabs .tabs__body .tabs__content:first-child').addClass('tabs__content--active');
 
-    React.render(
-      React.createElement(Tab1Content, null),
-      document.getElementById('tab-1')
-    );
-
-    /* Initialize responsive tabs jquery plugin */ 
-    $('.tabs').responsiveTabs({
-      rotate: false,
-      startCollapsed: 'tabs',
-      collapsible: 'tabs',
-      setHash: true,
-      animation: 'slide',
-      duration: 'fast'
+      /* Switch tab contant in according to active tab */ 
+      $('.tabs .tabs__head .tabs-item .tabs-item-link').on('click', function(e) {
+        var defaultTabClass = 'tabs-item--default';
+        var activeTabClass = 'tabs-item--active';
+        e.preventDefault();
+        $('.tabs .tabs__head .tabs-item').removeClass(activeTabClass).addClass(defaultTabClass);
+        $(this).parent().addClass(activeTabClass).removeClass(defaultTabClass);
+        var thisHash = $('.tabs .tabs__head .tabs-item.tabs-item--active .tabs-item-link').attr('href').substr(1);
+        $('.tabs .tabs__body .tabs__content').removeClass('tabs__content--active');
+        var tabContentActive = $('.tabs .tabs__body').find('.tabs__content#'+thisHash).addClass('tabs__content--active');
+      })
     });
   </script>
 </body>

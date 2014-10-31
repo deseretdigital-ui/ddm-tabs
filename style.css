@@ -1,21 +1,10 @@
 /* Style tabs in according to ksl local details page design */
 .tabs {
-  font-family: Arial;
   font-size: 14px;
 }
 
-.r-tabs-accordion-title .r-tabs-anchor {
-  padding: 12px 10px;
-  border-bottom: 2px solid #fff;
-  background: #5b92f4;
-}
-
-.r-tabs-accordion-title .r-tabs-anchor,
-.tabs__head .tabs-item .tabs-item-link  {
-  color: #fff;
-  text-decoration: none;
-  display: block;
-  position: relative;
+.tabs__head {
+  display: none;
 }
 
 .tabs__head .tabs-item.r-tabs-state-active {
@@ -44,7 +33,7 @@
   border-color: #fff transparent transparent transparent;
 }
 
-.tabs__body .container {
+.tabs__body .tabs__content {
   padding: 20px;
   background: #ebebeb;
 }
@@ -54,23 +43,40 @@
     background: #5b92f4;
     font-size: 0;
     border-bottom: 4px solid #2354ac;
+    margin: 0;
+    padding: 0;
+    display: block;
   }
 
   .tabs__head .tabs-item {
     font-size: 14px;
     border-right: 2px solid #fff;
     background: #5b92f4;
+    display: inline-block;
+    list-style: none;
   }
 
   .tabs__head .tabs-item:last-child {
     border: 0;
   }
 
-  .tabs__head .tabs-item .tabs-item-link {
-    padding: 12px 10px;
+  .tabs__head .tabs-item.tabs-item--active {
+    background: #2354ac;
   }
 
-  .tabs__body .container {
+  .tabs__head .tabs-item .tabs-item-link {
+    padding: 12px 10px;
+    display: block;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .tabs__body .tabs__content {
     padding: 30px;
+    display: none;
+  }
+
+  .tabs__body .tabs__content.tabs__content--active {
+    display: block;
   }
 }
