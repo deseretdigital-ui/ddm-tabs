@@ -1,0 +1,51 @@
+/* Style tabs in according to ksl local details page design */
+.tabs {
+  font-size: 14px;
+}
+
+.tabs__head {
+  display: none;
+}
+
+.tabs__body .tabs__content {
+  padding: 20px;
+  background: #ebebeb;
+}
+
+@media (min-width: 768px) {
+  .tabs__head {
+    font-size: 0;
+    border-bottom: 4px solid #2354ac;
+    margin: 0;
+    padding: 0;
+    display: block;
+  }
+
+  .tabs__head .tabs-item {
+    font-size: 14px;
+    border-right: 2px solid #fff;
+    background: #5b92f4;
+    display: inline-block;
+    list-style: none;
+    padding: 12px 10px;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .tabs__head .tabs-item:last-child {
+    border: 0;
+  }
+
+  .tabs__head .tabs-item.tabs-item--active {
+    background: #2354ac;
+  }
+
+  .tabs__body .tabs__content {
+    padding: 30px;
+    display: none;
+  }
+
+  .tabs__body .tabs__content.tabs__content--active {
+    display: block;
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "ddm-tabs",
+  "version": "0.0.0",
+  "homepage": "https://github.com/deseretdigital-ui/ddm-tabs",
+  "dependencies": {
+    "jquery": ">=2.1.1",
+    "ksl-styles": "git@github.com:deseretdigital-ui/ksl-styles.git#0.0.3"
+  }
+}
