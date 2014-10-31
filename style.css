@@ -27,6 +27,9 @@
     background: #5b92f4;
     display: inline-block;
     list-style: none;
+    padding: 12px 10px;
+    color: #fff;
+    text-decoration: none;
   }
 
   .tabs__head .tabs-item:last-child {
@@ -35,13 +38,6 @@
 
   .tabs__head .tabs-item.tabs-item--active {
     background: #2354ac;
-  }
-
-  .tabs__head .tabs-item .tabs-item-link {
-    padding: 12px 10px;
-    display: block;
-    color: #fff;
-    text-decoration: none;
   }
 
   .tabs__body .tabs__content {

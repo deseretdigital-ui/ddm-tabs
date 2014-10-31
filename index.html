@@ -52,12 +52,10 @@
         var TabItems = this.state.data.map(function(item, index) {
           /* Put each name in separate element and put dynamic hash to link */ 
           return (
-            <li key={'tab-item-' + (index + 1)} className="tabs-item tabs-item--default">
-              <a href={"#tab-" + (index + 1)} className="tabs-item-link">{item}</a>
-            </li>
+            <a href={"#tab-" + (index + 1)} className="tabs-item" key={'tab-item-' + (index + 1)}>{item}</a>
           );
         });
-        return <ul className="tabs__head">{TabItems}</ul>
+        return <div className="tabs__head">{TabItems}</div>
       }
     });
 
@@ -91,23 +89,30 @@
       <Tabs />, document.body
     );
 
-    /* Manipulate tabs with jquery */ 
     $(function(){
-      /* Activate first tab on load */ 
-      $('.tabs .tabs__head .tabs-item:first-child').addClass('tabs-item--active').removeClass('tabs-item--default');
-      $('.tabs .tabs__body .tabs__content:first-child').addClass('tabs__content--active');
-
-      /* Switch tab contant in according to active tab */ 
-      $('.tabs .tabs__head .tabs-item .tabs-item-link').on('click', function(e) {
-        var defaultTabClass = 'tabs-item--default';
+      /* Manipulate tabs with jquery */ 
+      var tabsMoving = function () {
         var activeTabClass = 'tabs-item--active';
-        e.preventDefault();
-        $('.tabs .tabs__head .tabs-item').removeClass(activeTabClass).addClass(defaultTabClass);
-        $(this).parent().addClass(activeTabClass).removeClass(defaultTabClass);
-        var thisHash = $('.tabs .tabs__head .tabs-item.tabs-item--active .tabs-item-link').attr('href').substr(1);
-        $('.tabs .tabs__body .tabs__content').removeClass('tabs__content--active');
-        var tabContentActive = $('.tabs .tabs__body').find('.tabs__content#'+thisHash).addClass('tabs__content--active');
-      })
+        var activeTabContent = 'tabs__content--active';
+
+        /* Activate first tab on load */ 
+        $('.tabs .tabs__head .tabs-item:first-child').addClass(activeTabClass)
+        $('.tabs .tabs__body .tabs__content:first-child').addClass(activeTabContent);
+
+        /* Switch tab contant in according to active tab */ 
+        $('.tabs .tabs__head .tabs-item').on('click', function(e) {
+          e.preventDefault();
+
+          $('.tabs .tabs__head .tabs-item').removeClass(activeTabClass);
+          $(this).addClass(activeTabClass);
+          $('.tabs .tabs__body .tabs__content').removeClass(activeTabContent);
+
+          var tabHash = $('.tabs .tabs__head .tabs-item.' + activeTabClass).attr('href').substr(1);
+          $('.tabs .tabs__body').find('.tabs__content#' + tabHash).addClass(activeTabContent);
+        })
+      }
+
+      tabsMoving();
     });
   </script>
 </body>
