@@ -1,0 +1,53 @@
+$tabButtonBg: #5b92f4;
+$tabButtonBgActive: #2354ac;
+
+.ddm-tabs {
+
+}
+
+.ddm-tabs__head {
+  border-bottom: 4px solid $tabButtonBgActive;
+}
+
+%ddm-tabs__buttonBase {
+  font-size: 18px;
+  color: #fff;
+  background: $tabButtonBg;
+
+  padding: 10px;
+}
+
+.ddm-tabs__button {
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 2px;
+
+  @extend %ddm-tabs__buttonBase;
+}
+
+.ddm-tabs__button--active {
+  background: $tabButtonBgActive;
+}
+
+%ddm-tabs__panelBase {
+  font-size: 16px;
+  border-bottom: 1px solid #e1e1e1;
+  padding: 20px;
+}
+
+.ddm-tabs__panel {
+  display: none;
+
+  @extend %ddm-tabs__panelBase;
+}
+
+.ddm-tabs__panel--active {
+  display: block;
+}
+
+/*hr*/.ddm-tabs__divider {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid #ededed;
+}
