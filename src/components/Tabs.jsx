@@ -13,8 +13,8 @@ var cx = React.addons.classSet;
 
 var Tabs = React.createClass({
   propTypes: {
-    shrinkToCollapsible: React.PropTypes.bool,
-    shrinkQuery: React.PropTypes.string,
+    convertToCollapsible: React.PropTypes.bool,
+    convertQuery: React.PropTypes.string,
     onTabActive: React.PropTypes.func
   },
 
@@ -22,8 +22,8 @@ var Tabs = React.createClass({
 
   getDefaultProps: function() {
     return {
-      shrinkToCollapsible: true,
-      shrinkQuery: '(max-width: 768px)',
+      convertToCollapsible: true,
+      convertQuery: '(max-width: 768px)',
       onTabActive: emptyFunction
     }
   },
@@ -36,7 +36,7 @@ var Tabs = React.createClass({
   },
 
   componentWillMount: function() {
-    if (this.props.shrinkToCollapsible) {
+    if (this.props.convertToCollapsible) {
       this.addMediaMatch();
     }
 
@@ -49,9 +49,9 @@ var Tabs = React.createClass({
   },
 
   addMediaMatch: function() {
-    var query = this.props.shrinkQuery;
+    var query = this.props.convertQuery;
     if (!query.match(/\(|\)/)) {
-      query = '(' + this.props.shrinkQuery + ')';
+      query = '(' + this.props.convertQuery + ')';
     }
 
     this.mediaQuery = window.matchMedia(query);
