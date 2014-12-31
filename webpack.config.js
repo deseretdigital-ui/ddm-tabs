@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+var BowerWebpackPlugin = require("bower-webpack-plugin");
 
 module.exports = {
   output: {
@@ -37,6 +38,7 @@ module.exports = {
     modulesDirectories: ['bower_components', 'node_modules'],
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin()
+    new webpack.optimize.UglifyJsPlugin(),
+    new BowerWebpackPlugin()
   ]
 }

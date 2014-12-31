@@ -7,19 +7,23 @@ var {Collapsible, CollapsibleHead, CollapsibleBody, CollapsibleGroup} = require(
 var getTabId = require('../utils/getTabId');
 var emptyFunction = require('../utils/emptyFunction');
 
+var mediaMatch = require('media-match/media.match.js');
+
 var cx = React.addons.classSet;
 
 var Tabs = React.createClass({
   propTypes: {
     shrinkToCollapsible: React.PropTypes.bool,
-    shrinkWidth: React.PropTypes.number,
+    shrinkQuery: React.PropTypes.string,
     onTabActivated: React.PropTypes.func
   },
+
+  mediaQuery: null,
 
   getDefaultProps: function() {
     return {
       shrinkToCollapsible: true,
-      shrinkWidth: 768,
+      shrinkQuery: '(max-width: 768px)',
       onTabActivated: emptyFunction
     }
   },
@@ -27,22 +31,53 @@ var Tabs = React.createClass({
   getInitialState: function() {
     return {
       activeId: null,
-      windowWidth: window.innerWidth
+      renderAsCollapsible: false
     };
   },
 
-  handleResize: function(e) {
-    this.setState({windowWidth: window.innerWidth});
+  componentWillMount: function() {
+    if (this.props.shrinkToCollapsible) {
+      this.addMediaMatch();
+    }
+
+    this.addIdsToTabChildren();
+    this.setInitialActiveId();
   },
 
-  componentWillMount: function() {
+  componentWillUnmount: function() {
+    this.mediaQuery.removeListener(this.observeMediaQuery);
+  },
+
+  addMediaMatch: function() {
+    var query = this.props.shrinkQuery;
+    if (!query.match(/\(|\)/)) {
+      query = '(' + this.props.shrinkQuery + ')';
+    }
+
+    this.mediaQuery = window.matchMedia(query);
+    this.mediaQuery.addListener(this.observeMediaQuery);
+
+    this.observeMediaQuery();
+  },
+
+  observeMediaQuery: function() {
+    this.setState({renderAsCollapsible: this.mediaQuery.matches});
+  },
+
+  addIdsToTabChildren: function() {
+    React.Children.forEach(this.props.children, function(child) {
+      if (child.type === Tab.type && child.props.id === undefined) {
+        child.props.id = getTabId();
+      }
+    });
+  },
+
+  setInitialActiveId: function() {
     var activeId = null;
     var firstId = null;
 
     React.Children.forEach(this.props.children, function(child) {
-      if (child.type === Tab.type && child.props.id === undefined) {
-        child.props.id = getTabId();
-
+      if (child.type === Tab.type) {
         if (child.props.active && activeId === null) {
           activeId = child.props.id;
         }
@@ -60,18 +95,8 @@ var Tabs = React.createClass({
     this.setState({'activeId': activeId});
   },
 
-  componentDidMount: function() {
-    window.addEventListener('resize', this.handleResize);
-  },
-
-  componentWillUnmount: function() {
-    window.removeEventListener('resize', this.handleResize);
-  },
-
   render: function() {
-    if (this.props.shrinkToCollapsible
-      && this.state.windowWidth <= this.props.shrinkWidth
-    ) {
+    if (this.state.renderAsCollapsible) {
       return this.renderAsCollapsible();
     } else {
       return this.renderAsTabs();
