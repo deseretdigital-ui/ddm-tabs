@@ -15,7 +15,7 @@ var Tabs = React.createClass({
   propTypes: {
     shrinkToCollapsible: React.PropTypes.bool,
     shrinkQuery: React.PropTypes.string,
-    onTabActivated: React.PropTypes.func
+    onTabActive: React.PropTypes.func
   },
 
   mediaQuery: null,
@@ -24,7 +24,7 @@ var Tabs = React.createClass({
     return {
       shrinkToCollapsible: true,
       shrinkQuery: '(max-width: 768px)',
-      onTabActivated: emptyFunction
+      onTabActive: emptyFunction
     }
   },
 
@@ -95,6 +95,11 @@ var Tabs = React.createClass({
     this.setState({'activeId': activeId});
   },
 
+  activateTab: function(id) {
+    this.setState({activeId: id});
+    this.props.onTabActive(id);
+  },
+
   render: function() {
     if (this.state.renderAsCollapsible) {
       return this.renderAsCollapsible();
@@ -162,7 +167,7 @@ var Tabs = React.createClass({
           <Collapsible
             open={open}
             key={'react-tab-collapsible-' + child.props.id}
-            onOpen={self.activateTab.bind(null, child.props.id)}
+            onOpen={self.getChildCollapsibleOnOpenMethod(child)}
           >
             <CollapsibleHead>
               <div className="ddm-tabs__collapsible-head">
@@ -182,8 +187,13 @@ var Tabs = React.createClass({
     return collapsibles;
   },
 
-  activateTab: function(id) {
-    this.setState({activeId: id});
+  getChildCollapsibleOnOpenMethod: function(child) {
+    var tabs = this;
+
+    return function() {
+      tabs.activateTab(child.props.id);
+      child.props.onTabActive(child.props.id);
+    };
   }
 });
 
