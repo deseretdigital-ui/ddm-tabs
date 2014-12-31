@@ -15,6 +15,7 @@ var Tabs = React.createClass({
   propTypes: {
     convertToCollapsible: React.PropTypes.bool,
     convertQuery: React.PropTypes.string,
+    collapsibleSpeed: React.PropTypes.number,
     onTabActive: React.PropTypes.func
   },
 
@@ -24,6 +25,7 @@ var Tabs = React.createClass({
     return {
       convertToCollapsible: true,
       convertQuery: '(max-width: 768px)',
+      collapsibleSpeed: 700,
       onTabActive: emptyFunction
     }
   },
@@ -174,7 +176,7 @@ var Tabs = React.createClass({
                 {child.props.title}
               </div>
             </CollapsibleHead>
-            <CollapsibleBody speed={1200}>
+            <CollapsibleBody speed={self.props.collapsibleSpeed}>
               <div className="ddm-tabs__collapsible-body">
                 {child.props.children}
               </div>
