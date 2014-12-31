@@ -2,71 +2,84 @@ var React = require('react/addons');
 
 var Tab = require('./Tab');
 var TabButton = require('./TabButton');
+var {Collapsible, CollapsibleHead, CollapsibleBody, CollapsibleGroup} = require('ddm-collapsible');
+
+var getTabId = require('../utils/getTabId');
+var emptyFunction = require('../utils/emptyFunction');
 
 var cx = React.addons.classSet;
 
-var tabUuid = 0;
-function getTabUuid() {
-  return ++tabUuid;
-};
-
 var Tabs = React.createClass({
+  propTypes: {
+    shrinkToCollapsible: React.PropTypes.bool,
+    shrinkWidth: React.PropTypes.number,
+    onTabActivated: React.PropTypes.func
+  },
+
+  getDefaultProps: function() {
+    return {
+      shrinkToCollapsible: true,
+      shrinkWidth: 768,
+      onTabActivated: emptyFunction
+    }
+  },
+
   getInitialState: function() {
     return {
-      activeUuid: null,
+      activeId: null,
       windowWidth: window.innerWidth
     };
   },
 
+  handleResize: function(e) {
+    this.setState({windowWidth: window.innerWidth});
+  },
+
   componentWillMount: function() {
-    var activeUuid = null;
-    var firstUuid = null;
+    var activeId = null;
+    var firstId = null;
 
     React.Children.forEach(this.props.children, function(child) {
-      if (child.type === Tab.type && child.props.uuid === undefined) {
-        child.props.uuid = getTabUuid();
+      if (child.type === Tab.type && child.props.id === undefined) {
+        child.props.id = getTabId();
 
-        if (child.props.active && activeUuid === null) {
-          activeUuid = child.props.uuid;
+        if (child.props.active && activeId === null) {
+          activeId = child.props.id;
         }
 
-        if (firstUuid === null) {
-          firstUuid = child.props.uuid;
+        if (firstId === null) {
+          firstId = child.props.id;
         }
       }
     });
 
-    if (activeUuid === null) {
-      activeUuid = firstUuid;
+    if (activeId === null) {
+      activeId = firstId;
     }
 
-    this.setState({'activeUuid': activeUuid});
+    this.setState({'activeId': activeId});
+  },
+
+  componentDidMount: function() {
+    window.addEventListener('resize', this.handleResize);
+  },
+
+  componentWillUnmount: function() {
+    window.removeEventListener('resize', this.handleResize);
   },
 
   render: function() {
-    return this.renderAsTabs();
+    if (this.props.shrinkToCollapsible
+      && this.state.windowWidth <= this.props.shrinkWidth
+    ) {
+      return this.renderAsCollapsible();
+    } else {
+      return this.renderAsTabs();
+    }
   },
 
   renderAsTabs: function() {
-    var self = this;
-    var tabList = [];
-
-    React.Children.forEach(this.props.children, function(child) {
-      if (child.type === Tab.type) {
-        child.props.active = child.props.uuid === self.state.activeUuid;
-
-        tabList.push(
-          <TabButton
-            tabUuid={child.props.uuid}
-            active={child.props.active}
-            onClick={self.handleTabButtonClick}
-            key={'react-tab-button-' + child.props.uuid}
-          >
-            {child.props.title}
-          </TabButton>
-        );
-      }
-    });
+    var tabList = this.renderTabList();
 
     return (
       <div className="ddm-tabs">
@@ -78,8 +91,74 @@ var Tabs = React.createClass({
     );
   },
 
-  handleTabButtonClick: function(uuid) {
-    this.setState({activeUuid: uuid});
+  renderTabList: function() {
+    var tabList = [];
+    var self = this;
+
+    React.Children.forEach(this.props.children, function(child) {
+      if (child.type === Tab.type) {
+        child.props.active = child.props.id === self.state.activeId;
+
+        tabList.push(
+          <TabButton
+            tabId={child.props.id}
+            active={child.props.active}
+            onClick={self.activateTab}
+            key={'react-tab-button-' + child.props.id}
+          >
+            {child.props.title}
+          </TabButton>
+        );
+      }
+    });
+
+    return tabList;
+  },
+
+  renderAsCollapsible: function() {
+    var collapsibles = this.renderCollapsibles();
+
+    return (
+      <CollapsibleGroup accordion={true} className="ddm-tabs ddm-tabs--collapsible">
+        {collapsibles}
+      </CollapsibleGroup>
+    );
+  },
+
+  renderCollapsibles: function() {
+    var collapsibles = [];
+    var self = this;
+
+    React.Children.forEach(this.props.children, function(child) {
+      if (child.type === Tab.type) {
+        var open = child.props.id === self.state.activeId;
+
+        collapsibles.push(
+          <Collapsible
+            open={open}
+            key={'react-tab-collapsible-' + child.props.id}
+            onOpen={self.activateTab.bind(null, child.props.id)}
+          >
+            <CollapsibleHead>
+              <div className="ddm-tabs__collapsible-head">
+                {child.props.title}
+              </div>
+            </CollapsibleHead>
+            <CollapsibleBody speed={1200}>
+              <div className="ddm-tabs__collapsible-body">
+                {child.props.children}
+              </div>
+            </CollapsibleBody>
+          </Collapsible>
+        );
+      }
+    });
+
+    return collapsibles;
+  },
+
+  activateTab: function(id) {
+    this.setState({activeId: id});
   }
 });
 

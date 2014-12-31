@@ -3,7 +3,7 @@ var React = require('react/addons');
 var Tab = React.createClass({
   propTypes: {
     title: React.PropTypes.string.isRequired,
-    uuid: React.PropTypes.number.isRequired,
+    id: React.PropTypes.string.isRequired,
     active: React.PropTypes.bool
   },
 

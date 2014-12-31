@@ -1,10 +1,9 @@
 var React = require('react/addons');
-
-var emptyFunction = function() {};
+var emptyFunction = require('../utils/emptyFunction');
 
 var TabButton = React.createClass({
   propTypes: {
-    tabUuid: React.PropTypes.number.isRequired,
+    tabId: React.PropTypes.string.isRequired,
     active: React.PropTypes.bool,
     onClick: React.PropTypes.func
   },
@@ -17,7 +16,7 @@ var TabButton = React.createClass({
   },
 
   handleClick: function() {
-    this.props.onClick(this.props.tabUuid);
+    this.props.onClick(this.props.tabId);
   },
 
   render: function() {
