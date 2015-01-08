@@ -2,6 +2,7 @@ var React = require('react/addons');
 
 var emptyFunction = require('../utils/emptyFunction');
 
+// Dummy component that gets split into TabPanel and TabButton
 var Tab = React.createClass({
   propTypes: {
     title: React.PropTypes.string.isRequired,
@@ -17,21 +18,10 @@ var Tab = React.createClass({
     };
   },
 
-  componentWillReceiveProps: function(newProps) {
-    if (newProps.active) {
-      this.props.onTabActive(this.props.id);
-    }
-  },
-
   render: function() {
-    classes = {
-      'ddm-tabs__panel': true,
-      'ddm-tabs__panel--active': this.props.active
-    };
-
     return (
-      <div className={React.addons.classSet(classes)}>
-        {this.props.children}
+      <div className="alert alert--error">
+        <strong>This Tag should not render!</strong>
       </div>
     );
   }

@@ -5,13 +5,21 @@ var TabButton = React.createClass({
   propTypes: {
     tabId: React.PropTypes.string.isRequired,
     active: React.PropTypes.bool,
-    onClick: React.PropTypes.func
+    onClick: React.PropTypes.func,
+    onTabActive: React.PropTypes.func
   },
 
   getDefaultProps: function() {
     return {
       active: false,
-      onClick: emptyFunction
+      onClick: emptyFunction,
+      onTabActive: emptyFunction
+    }
+  },
+
+  componentWillReceiveProps: function(newProps) {
+    if (newProps.active && this.props.active !== true) {
+      this.props.onTabActive(this.props.tabId);
     }
   },
 

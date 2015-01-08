@@ -2,6 +2,7 @@ var React = require('react/addons');
 
 var Tab = require('./Tab');
 var TabButton = require('./TabButton');
+var TabPanel = require('./TabPanel');
 var {Collapsible, CollapsibleHead, CollapsibleBody, CollapsibleGroup} = require('ddm-collapsible');
 
 var getTabId = require('../utils/getTabId');
@@ -9,11 +10,9 @@ var emptyFunction = require('../utils/emptyFunction');
 
 var mediaMatch = require('media-match/media.match.js');
 
-var cx = React.addons.classSet;
-
 var Tabs = React.createClass({
   propTypes: {
-    convertToCollapsible: React.PropTypes.bool,
+    convertToCollapsibleGroup: React.PropTypes.bool,
     convertQuery: React.PropTypes.string,
     collapsibleSpeed: React.PropTypes.number,
     onTabActive: React.PropTypes.func
@@ -23,7 +22,7 @@ var Tabs = React.createClass({
 
   getDefaultProps: function() {
     return {
-      convertToCollapsible: true,
+      convertToCollapsibleGroup: true,
       convertQuery: '(max-width: 768px)',
       collapsibleSpeed: 700,
       onTabActive: emptyFunction
@@ -33,12 +32,12 @@ var Tabs = React.createClass({
   getInitialState: function() {
     return {
       activeId: null,
-      renderAsCollapsible: false
+      renderAsCollapsibleGroup: false
     };
   },
 
   componentWillMount: function() {
-    if (this.props.convertToCollapsible) {
+    if (this.props.convertToCollapsibleGroup) {
       this.addMediaMatch();
     }
 
@@ -63,7 +62,7 @@ var Tabs = React.createClass({
   },
 
   observeMediaQuery: function() {
-    this.setState({renderAsCollapsible: this.mediaQuery.matches});
+    this.setState({renderAsCollapsibleGroup: this.mediaQuery.matches});
   },
 
   addIdsToTabChildren: function() {
@@ -103,39 +102,40 @@ var Tabs = React.createClass({
   },
 
   render: function() {
-    if (this.state.renderAsCollapsible) {
-      return this.renderAsCollapsible();
+    if (this.state.renderAsCollapsibleGroup) {
+      return this.renderAsCollapsibleGroup();
     } else {
       return this.renderAsTabs();
     }
   },
 
   renderAsTabs: function() {
-    var tabList = this.renderTabList();
+    var tabButtons = this.renderTabButtons();
+    var tabPanels = this.renderTabPanels();
 
     return (
       <div className="ddm-tabs">
         <div className="ddm-tabs__head">
-          {tabList}
+          {tabButtons}
         </div>
-        {this.props.children}
+        {tabPanels}
       </div>
     );
   },
 
-  renderTabList: function() {
-    var tabList = [];
+  renderTabButtons: function() {
+    var tabButtons = [];
     var self = this;
 
     React.Children.forEach(this.props.children, function(child) {
       if (child.type === Tab.type) {
-        child.props.active = child.props.id === self.state.activeId;
 
-        tabList.push(
+        tabButtons.push(
           <TabButton
             tabId={child.props.id}
-            active={child.props.active}
+            active={self.state.activeId === child.props.id}
             onClick={self.activateTab}
+            onTabActive={child.props.onTabActive}
             key={'react-tab-button-' + child.props.id}
           >
             {child.props.title}
@@ -144,10 +144,32 @@ var Tabs = React.createClass({
       }
     });
 
-    return tabList;
+    return tabButtons;
   },
 
-  renderAsCollapsible: function() {
+  renderTabPanels: function() {
+    var tabPanels = [];
+    var self = this;
+
+    React.Children.forEach(this.props.children, function(child) {
+      if (child.type === Tab.type) {
+
+        tabPanels.push(
+          <TabPanel
+            tabId={child.props.id}
+            active={self.state.activeId === child.props.id}
+            key={'react-tab-panel-' + child.props.id}
+          >
+            {child.props.children}
+          </TabPanel>
+        );
+      }
+    });
+
+    return tabPanels;
+  },
+
+  renderAsCollapsibleGroup: function() {
     var collapsibles = this.renderCollapsibles();
 
     return (
@@ -163,7 +185,7 @@ var Tabs = React.createClass({
 
     React.Children.forEach(this.props.children, function(child) {
       if (child.type === Tab.type) {
-        var open = child.props.id === self.state.activeId;
+        var open = self.state.activeId === child.props.id;
 
         collapsibles.push(
           <Collapsible
