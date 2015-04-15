@@ -19,7 +19,7 @@ var TabsResponsive = React.createClass({
 
   getDefaultProps: function() {
     return {
-      convertQuery: '(max-width: 768px)',
+      convertQuery: '(max-width: 767px)',
       collapsibleSpeed: 700
     }
   },
