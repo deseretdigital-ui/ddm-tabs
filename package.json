@@ -37,7 +37,9 @@
   },
   "peerDependencies": {
     "react": ">=0.14.0",
-    "react-dom": ">=0.14.0",
+    "react-dom": ">=0.14.0"
+  },
+  "dependencies": {
     "ddm-collapsible": "^1.0.0"
   }
 }

@@ -40,8 +40,7 @@ module.exports = {
       commonjs: "react-dom",
       commonjs2: "react-dom",
       amd: "react-dom"
-    },
-    "ddm-collapsible": "DDMCollapsible"
+    }
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
