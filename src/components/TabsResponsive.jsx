@@ -77,7 +77,7 @@ var TabsResponsive = React.createClass({
     var self = this;
 
     React.Children.forEach(this.props.children, function(child) {
-      if (child.type === Tab.type) {
+      if (child.type === Tab) {
         var open = child.props.id === self.state.activeId;
 
         collapsibles.push(

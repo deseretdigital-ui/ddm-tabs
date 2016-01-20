@@ -31,7 +31,7 @@ var TabsLogic = {
 
   addIdsToTabChildren: function() {
     React.Children.forEach(this.props.children, function(child) {
-      if (child.type === Tab.type && child.props.id === undefined) {
+      if (child.type === Tab && child.props.id === undefined) {
         child.props.id = getTabId();
       }
     });
@@ -42,7 +42,7 @@ var TabsLogic = {
     var firstId = null;
 
     React.Children.forEach(this.props.children, function(child) {
-      if (child.type === Tab.type) {
+      if (child.type === Tab) {
         if (child.props.active && activeId === null) {
           activeId = child.props.id;
         }
@@ -90,7 +90,7 @@ var TabsLogic = {
     var self = this;
 
     React.Children.forEach(this.props.children, function(child) {
-      if (child.type === Tab.type) {
+      if (child.type === Tab) {
 
         tabButtons.push(
           <TabButton
@@ -114,7 +114,7 @@ var TabsLogic = {
     var self = this;
 
     React.Children.forEach(this.props.children, function(child) {
-      if (child.type === Tab.type) {
+      if (child.type === Tab) {
 
         tabPanels.push(
           <TabPanel

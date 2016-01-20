@@ -1,4 +1,5 @@
 var React = require('react');
+var cx = require('classnames');
 
 var TabPanel = React.createClass({
   propTypes: {
@@ -13,13 +14,13 @@ var TabPanel = React.createClass({
   },
 
   render: function() {
-    classes = {
+    var classes = {
       'ddm-tabs__panel': true,
       'ddm-tabs__panel--active': this.props.active
     };
 
     return (
-      <div className={React.addons.classSet(classes)}>
+      <div className={cx(classes)}>
         {this.props.children}
       </div>
     );

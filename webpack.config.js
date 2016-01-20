@@ -47,15 +47,7 @@ module.exports = {
     modulesDirectories: ['bower_components', 'node_modules']
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      },
-      output: {
-        comments: false
-      },
-      mangle: true
-    }),
+    new webpack.optimize.UglifyJsPlugin(),
     definePlugin
   ]
 };
