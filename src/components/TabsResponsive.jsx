@@ -1,4 +1,4 @@
-var React = require('react/addons');
+var React = require('react');
 
 var Tab = require('./Tab');
 var TabsLogic = require('../mixins/TabsLogic');

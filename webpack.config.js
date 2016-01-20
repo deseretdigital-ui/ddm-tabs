@@ -26,11 +26,11 @@ module.exports = {
       commonjs2: "react",
       amd: "react"
     },
-    "react/addons": {
+    "react-dom": {
       root: "React",
-      commonjs: "react/addons",
-      commonjs2: "react/addons",
-      amd: "react/addons"
+      commonjs: "react-dom",
+      commonjs2: "react-dom",
+      amd: "react-dom"
     }
   },
   resolve: {

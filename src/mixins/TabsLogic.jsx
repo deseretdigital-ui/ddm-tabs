@@ -1,4 +1,4 @@
-var React = require('react/addons');
+var React = require('react');
 
 var Tab = require('../components/Tab');
 var TabButton = require('../components/TabButton');

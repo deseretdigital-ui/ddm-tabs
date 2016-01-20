@@ -1,4 +1,4 @@
-var React = require('react/addons');
+var React = require('react');
 var emptyFunction = require('../utils/emptyFunction');
 
 var TabButton = React.createClass({
