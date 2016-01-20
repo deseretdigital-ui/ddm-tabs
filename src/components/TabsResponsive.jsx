@@ -2,8 +2,8 @@ var React = require('react');
 
 var Tab = require('./Tab');
 var TabsLogic = require('../mixins/TabsLogic');
-
-var {Collapsible, CollapsibleHead, CollapsibleBody, CollapsibleGroup} = require('ddm-collapsible');
+var DDMCollapsible = require('ddm-collapsible');
+var {Collapsible, CollapsibleHead, CollapsibleBody, CollapsibleGroup} = DDMCollapsible;
 
 var mediaMatch = require('media-match/media.match.js');
 
