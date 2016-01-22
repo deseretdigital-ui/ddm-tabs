@@ -1,9 +1,9 @@
-var React = require('react/addons');
+var React = require('react');
 
 var Tab = require('./Tab');
 var TabsLogic = require('../mixins/TabsLogic');
-
-var {Collapsible, CollapsibleHead, CollapsibleBody, CollapsibleGroup} = require('ddm-collapsible');
+var DDMCollapsible = require('ddm-collapsible');
+var {Collapsible, CollapsibleHead, CollapsibleBody, CollapsibleGroup} = DDMCollapsible;
 
 var mediaMatch = require('media-match/media.match.js');
 
@@ -77,7 +77,7 @@ var TabsResponsive = React.createClass({
     var self = this;
 
     React.Children.forEach(this.props.children, function(child) {
-      if (child.type === Tab.type) {
+      if (child.type === Tab) {
         var open = child.props.id === self.state.activeId;
 
         collapsibles.push(

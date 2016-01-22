@@ -1,5 +1,6 @@
-var React = require('react/addons');
+var React = require('react');
 var emptyFunction = require('../utils/emptyFunction');
+var cx = require('classnames');
 
 var TabButton = React.createClass({
   propTypes: {
@@ -35,7 +36,7 @@ var TabButton = React.createClass({
 
     return (
       <a
-        className={React.addons.classSet(classes)}
+        className={cx(classes)}
         onClick={this.handleClick}
       >
         {this.props.children}
