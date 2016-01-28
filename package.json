@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "init": "npm install; bower install",
-    "build": "npm run init; gulp build"
+    "build": "npm run init; gulp build",
+    "publish": "npm run build; gulp ghpages"
   },
   "repository": {
     "type": "git",
