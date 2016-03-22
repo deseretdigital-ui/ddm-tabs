@@ -29,10 +29,11 @@ var TabsLogic = {
     this.setInitialActiveId();
   },
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps: function(nextProps) {
     if (nextProps.activeId && nextProps.activeId !== this.state.activeId) {
-      this.setState({ activeId: nextProps.activeId });
-      this.props.onTabActive(nextProps.activeId);
+      this.setState({ activeId: nextProps.activeId }, function() {
+        this.props.onTabActive(nextProps.activeId);
+      });
     }
   },
 
@@ -73,8 +74,9 @@ var TabsLogic = {
     }
 
     if (alwaysActivateTab || this.state.activeId !== id) {
-      this.setState({activeId: id});
-      this.props.onTabActive(id);
+      this.setState({activeId: id}, function() {
+        this.props.onTabActive(id);
+      });
     }
   },
 
