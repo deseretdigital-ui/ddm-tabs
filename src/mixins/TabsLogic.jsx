@@ -9,12 +9,14 @@ var emptyFunction = require('../utils/emptyFunction');
 
 var TabsLogic = {
   propTypes: {
-    onTabActive: React.PropTypes.func
+    onTabActive: React.PropTypes.func,
+    activeId: React.PropTypes.string
   },
 
   getDefaultProps: function() {
     return {
-      onTabActive: emptyFunction
+      onTabActive: emptyFunction,
+      activeId: ''
     }
   },
 
