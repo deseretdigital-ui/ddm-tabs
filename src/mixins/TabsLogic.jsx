@@ -29,6 +29,13 @@ var TabsLogic = {
     this.setInitialActiveId();
   },
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.activeId && nextProps.activeId !== this.state.activeId) {
+      this.setState({ activeId: nextProps.activeId });
+      this.props.onTabActive(nextProps.activeId);
+    }
+  },
+
   addIdsToTabChildren: function() {
     React.Children.forEach(this.props.children, function(child) {
       if (child.type === Tab && child.props.id === undefined) {
@@ -38,7 +45,7 @@ var TabsLogic = {
   },
 
   setInitialActiveId: function() {
-    var activeId = null;
+    var activeId = this.props.activeId || null;
     var firstId = null;
 
     React.Children.forEach(this.props.children, function(child) {
