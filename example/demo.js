@@ -164,8 +164,8 @@ ReactDOM.render(React.createElement(
   )
 ), document.getElementById('tabExample'));
 
-var ProgramaticallyChangedActiveTab = React.createClass({
-  displayName: 'ProgramaticallyChangedActiveTab',
+var ProgrammaticallyChangedActiveTab = React.createClass({
+  displayName: 'ProgrammaticallyChangedActiveTab',
 
   getInitialState: function getInitialState() {
     return {
@@ -279,4 +279,4 @@ var ProgramaticallyChangedActiveTab = React.createClass({
 
 });
 
-ReactDOM.render(React.createElement(ProgramaticallyChangedActiveTab, null), document.getElementById('programaticTabExample'));
+ReactDOM.render(React.createElement(ProgrammaticallyChangedActiveTab, null), document.getElementById('programaticTabExample'));
