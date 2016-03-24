@@ -9,12 +9,14 @@ var emptyFunction = require('../utils/emptyFunction');
 
 var TabsLogic = {
   propTypes: {
-    onTabActive: React.PropTypes.func
+    onTabActive: React.PropTypes.func,
+    activeId: React.PropTypes.string
   },
 
   getDefaultProps: function() {
     return {
-      onTabActive: emptyFunction
+      onTabActive: emptyFunction,
+      activeId: ''
     }
   },
 
@@ -29,6 +31,14 @@ var TabsLogic = {
     this.setInitialActiveId();
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps.activeId && nextProps.activeId !== this.state.activeId) {
+      this.setState({ activeId: nextProps.activeId }, function() {
+        this.props.onTabActive(nextProps.activeId);
+      });
+    }
+  },
+
   addIdsToTabChildren: function() {
     React.Children.forEach(this.props.children, function(child) {
       if (child.type === Tab && child.props.id === undefined) {
@@ -38,7 +48,7 @@ var TabsLogic = {
   },
 
   setInitialActiveId: function() {
-    var activeId = null;
+    var activeId = this.props.activeId || null;
     var firstId = null;
 
     React.Children.forEach(this.props.children, function(child) {
@@ -66,8 +76,9 @@ var TabsLogic = {
     }
 
     if (alwaysActivateTab || this.state.activeId !== id) {
-      this.setState({activeId: id});
-      this.props.onTabActive(id);
+      this.setState({activeId: id}, function() {
+        this.props.onTabActive(id);
+      });
     }
   },
 
